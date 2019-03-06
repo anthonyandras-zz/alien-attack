@@ -1,2 +1,2 @@
 # alien-attack
-Alien-attack game implemented in JS and HTML. The source was heavily borrowed from Foundation Game Design with HTML5 and Javascript, a book I read in an attempt to brush up on my front end development skills. 
+Alien-attack game implemented in JS and HTML. The source was heavily borrowed from Foundation Game Design with HTML5 and Javascript, a book I read in an attempt to brush up on my front end development skills. Testing and development occurred within the Chrome browser. There is a known issue in Firefox, as it requires any @font-face loads to be in the same directory as the CSS itself, which clearly is not the case here.
