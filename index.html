@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Alien Attack!</title>
+        <meta charset="utf-8"/> 
+        <link rel="stylesheet" href="styles.css"/>
+    </head>
+    <body>
+        <section id="game">
+            <h1>Alien Attack!</h1>
+            <div id="stage">
+                <div id="background"></div>
+                <div id="cannon"></div>
+                <div id="missile"></div>
+                <div id="alien"></div>
+                <div id="explosion"></div>
+            </div>
+            <p id="output">Enter the X and Y position (0-300), then click fire.</p>
+            <input id="inputX" type="text" placeholder="X..."/>
+            <input id="inputY" type="text" placeholder="Y..."/>
+            <button>fire!</button>
+        </section>
+        <script>
+            let alienX = 80;
+            let alienY = 20;
+            let guessX = 0;
+            let guessY = 0;
+            let shotsRemaining = 8;
+            let shotsMade = 0;
+            let gameState = "";
+            let gameWon = false;
+
+            let cannon = document.querySelector("#cannon");
+            let alien = document.querySelector("#alien");
+            let missile = document.querySelector("#missile");
+            let explosion = document.querySelector("#explosion");
+            
+            let inputX = document.querySelector("#inputX");
+            let inputY = document.querySelector("#inputY");
+            let output = document.querySelector("#output");
+
+            let button = document.querySelector("button");
+            button.style.cursor = "pointer";
+            button.addEventListener("click", clickHandler, false);
+
+            function render() {
+                alien.style.left = alienX + "px";
+                alien.style.top = alienY + "px";
+                cannon.style.left = guessX + "px";
+                missile.style.left = guessX + "px";
+                missile.style.top = guessY + "px";
+
+                if(gameWon) {
+                    explosion.style.display = "block";
+                    explosion.style.left = alienX + "px";
+                    explosion.style.top = alienY + "px";
+
+                    alien.style.display = "none";
+                    missile.style.display = "none";
+                }
+            }
+
+            function clickHandler() {
+                validateInput();
+            }
+
+            function playGame() {
+                shotsRemaining--;
+                shotsMade++;
+                gameState = " Shots: " + shotsMade + ", Remaining: " + shotsRemaining;
+                guessX = parseInt(inputX.value);
+                guessY = parseInt(inputY.value);
+                if( guessX >= alienX && guessX <= alienX + 20) {
+                    if( guessY >= alienY && guessY <= alienY + 20 ) {
+                        gameWon = true;
+                        alien.style.display="none";
+                        endGame();
+                    }
+                } else {
+                    output.innerHTML = "Miss!" + gameState;
+                    if ( shotsRemaining < 1 ) {
+                        endGame();
+                    }
+                }
+
+                if ( !gameWon ) {
+                    alienX = Math.floor(Math.random() * 280);
+                    alienY += 30;
+                }
+
+                render();
+                console.log("X: " + alienX);
+                console.log("Y: " + alienY);
+            }
+
+            function endGame() {
+                if( gameWon ) {
+                    output.innerHTML = "Hit! You saved earth! <br/>" + "It only took you " + shotsMade + " shots.";
+                } else {
+                    output.innerHTML = "You lost! <br/> The earth has been invaded.";
+                }
+            }
+
+            function validateInput () {
+                let x = parseInt( inputX.value );
+                let y = parseInt( inputY.value );
+                if(isNaN( x ) || isNaN( y )) {
+                    output.innerHTML = "Please enter a number.";
+                } else if ( x > 300 || y > 300 ) {
+                    output.innerHTML = "Please enter a number less than 300.";
+                } else {
+                    playGame();
+                }
+            }
+        </script>
+    </body>
+</html>
